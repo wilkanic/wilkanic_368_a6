@@ -113,16 +113,12 @@ void postOrderDimensions(Node* root, FILE* outputFile, int x, int y) {
         return;
     }
     if (root->label == -1){
-        x = root->width;
-        y = root->height;
         if (root->cutline == 'H'){
-            
-            postOrderDimensions(root->left, outputFile, 0, (y - root->left->height));
-            postOrderDimensions(root->right, outputFile, 0, y);
+            postOrderDimensions(root->left, outputFile, x, (y + (root->right->height)));
+            postOrderDimensions(root->right, outputFile, x, y);
         } else {
-            y = (root->left->height > root->right->height) ? y - root->left->height : y - root->right->height;
-            postOrderDimensions(root->left, outputFile, 0, y);
-            postOrderDimensions(root->right, outputFile, root->left->width, y);
+            postOrderDimensions(root->left, outputFile, x, y);
+            postOrderDimensions(root->right, outputFile, x + root->left->width, y);
         }
     } else {
         fprintf(outputFile, "%d((%d,%d)(%d,%d))\n", root->label, root->width, root->height, x, y);
@@ -149,6 +145,7 @@ Node* buildTree(FILE* inFile) {
     rewind(inFile);
     stackArray* stack = malloc(sizeof(stackArray));
     stack->node = malloc(size * sizeof(Node*));
+    stack->top = -1;
     // int top = -1;
 
     int label, width, height;
