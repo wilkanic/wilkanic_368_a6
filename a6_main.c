@@ -148,7 +148,7 @@ Node* buildTree(FILE* inFile) {
     }
     rewind(inFile);
     stackArray* stack = malloc(sizeof(stackArray));
-    stack->node = malloc(size * sizeof(Node));
+    stack->node = malloc(size * sizeof(Node*));
     // int top = -1;
 
     int label, width, height;
